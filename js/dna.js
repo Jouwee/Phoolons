@@ -23,7 +23,7 @@ class Dna {
   static random() {
     let dnaString = [];
     for (let i = 0; i < DNA_SIZE; i++) {
-      dnaString.push(random());
+      dnaString.push(random(-1, 1));
     }
     return new Dna(dnaString);
   }
