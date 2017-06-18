@@ -1,5 +1,5 @@
 /** Size of the DNA string */
-const DNA_SIZE = 3;
+const DNA_SIZE = 4;
 
 /**
  * DNA

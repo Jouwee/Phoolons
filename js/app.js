@@ -5,33 +5,48 @@ var entities = [];
 const WORLD_SIZE = new p5.Vector(800, 600);
 
 let generations = [];
+let simulationTick = 0;
+
+let doAsap;
 
 function setup() {
   createCanvas(800, 600);
   simulateGeneration(nextGeneration());
+  doAsap = createCheckbox('ASAP', false);
 }
 
 function draw() {
   // Background
   fill(51);
   rect(0, 0, 800, 600);
-  for (let i = 0; i < entities.length; i++) {
-    entities[i].update();
-  }
+
+  do {
+
+    simulationTick++;
+    for (let i = 0; i < entities.length; i++) {
+      entities[i].update();
+    }
+    chance = map(simulationTick, 0, 4000, 0.1, 0);
+    if (random(1) < chance) {
+      entities.push(new Food());
+    }
+
+    var creatureCount = 0;
+    for (let i in entities) {
+      if (entities[i] instanceof Creature) {
+        creatureCount++;
+        break;
+      }
+    }
+    if (creatureCount == 0) {
+      simulateGeneration(nextGeneration());
+      break;
+    }
+
+  } while(doAsap.checked());
 
   for (let i = 0; i < entities.length; i++) {
     entities[i].draw();
-  }
-
-  let creatureCount = 0;
-  for (let i in entities) {
-    if (entities[i] instanceof Creature) {
-      creatureCount++;
-      break;
-    }
-  }
-  if (creatureCount == 0) {
-    simulateGeneration(nextGeneration());
   }
 
 }
@@ -56,6 +71,7 @@ function nextGeneration() {
 
 function simulateGeneration(gen) {
   entities = [];
+  simulationTick = 0;
   entities = entities.concat(gen.population);
   for (let i = 0; i < 80; i ++) {
     entities.push(new Food());
