@@ -8,6 +8,7 @@ class Creature extends Entity {
    */
   constructor(dna) {
     super();
+    this.internalClock = 0;
     this.life = 1;
     if (dna === undefined) {
       dna = Dna.random();
@@ -20,6 +21,7 @@ class Creature extends Entity {
    */
   update() {
     super.update();
+    this.internalClock++;
     this.life -= 0.005;
     if (this.life <= 0) {
       for (var i in entities) {
@@ -37,6 +39,9 @@ class Creature extends Entity {
         if (this.inContactWith(entities[i])) {
           entities.splice(i, 1);
           this.life += 0.2;
+          if (this.life > 1) {
+            this.life = 1;
+          }
           continue;
         }
       }
@@ -54,7 +59,7 @@ class Creature extends Entity {
       let desired = p5.Vector.sub(closestFood.pos, this.pos);
       desired.setMag(this.dna.dnaString[0] * 5);
       let steer = p5.Vector.sub(desired, this.vel);
-      steer.limit(this.dna.dnaString[1] * 0.05);
+      steer.limit(this.dna.dnaString[1] * 0.2);
       this.acc = steer;
     }
     this.color = lerpColor(color(255, 0, 0), color(0, 255, 0), this.life);

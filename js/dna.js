@@ -28,4 +28,13 @@ class Dna {
     return new Dna(dnaString);
   }
 
+  /**
+   * Crosses two DNA strings
+   */
+  cross(other) {
+    let cut = floor(random(this.dnaString.length));
+    let newDna = this.dnaString.slice(0, cut).concat(other.dnaString.slice(cut));
+    return new Dna(newDna);
+  }
+
 }
