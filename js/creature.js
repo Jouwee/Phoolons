@@ -59,6 +59,7 @@ class Creature extends Entity {
       let x = closestFood.pos.x - this.pos.x;
       let y = closestFood.pos.y - this.pos.y;
 
+      
       let perceptronX = new Perceptron([this.dna.dnaString[0], this.dna.dnaString[1]], function(input) {
         let desired = createVector(input[0], input[1]);
         desired.limit(0.2);
@@ -71,9 +72,10 @@ class Creature extends Entity {
       });
       this.acc = createVector(perceptronX.compute([x, y]), perceptronY.compute([x, y]));
 
+
       /*
       let desired = p5.Vector.sub(closestFood.pos, this.pos);
-      desired.setMag(this.dna.dnaString[0] * 5);
+      desired.setMag( * 5);
       let steer = p5.Vector.sub(desired, this.vel);
       steer.limit(this.dna.dnaString[1] * 0.2);
       this.acc = steer;
